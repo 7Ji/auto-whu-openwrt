@@ -12,25 +12,27 @@ if [[ -z "$username" || -z "$pwd" ]]; then
 	exit
 fi
 while true; do
-    ping -w1 -W1 -c 1 baidu.com
+    ping -w1 -W1 -c 1 baidu.com 1>/dev/null 2>&1 
     if [[ $? = 0 ]]; then
-		echo "INFO: Still online, next check in 1 minute"
-        echo "[`date +"%Y-%m-%d-%H-%M"`] INFO: Still online, next check in 1 minute" >> /tmp/auto-whu.log
+		echo "INFO: Still online, next check in 5 seconds"
+        echo "[`date +"%Y-%m-%d-%H-%M"`] INFO: Still online, next check in 5 seconds" >> /tmp/auto-whu.log
     else
 		echo "WARNING: Check failed, offline, trying to reconnect"
         echo "[`date +"%Y-%m-%d-%H-%M"`] WARNING: Check failed, offline, trying to reconnect" >> /tmp/auto-whu.log
-        curl -d "username=$username&pwd=$pwd" "http://172.19.1.9:8080/eportal/userV2.do?method=login&param=true&`curl baidu.com|grep -oP "(?<=\?).*(?=\')"`"
-		ping -w1 -W1 -c 1 baidu.com
+        curl -d "username=$username&pwd=$pwd" "http://172.19.1.9:8080/eportal/userV2.do?method=login&param=true&`curl baidu.com|grep -oP "(?<=\?).*(?=\')"`" 1>/dev/null 2>&1 
+		sleep 5
+		ping -w1 -W1 -c 1 baidu.com 1>/dev/null 2>&1 
 		if [[ $? = 0 ]]; then
-			echo "INFO: (Re)connection successful" >> /tmp/auto-whu.log
+			echo "INFO: (Re)connection successful"
 			echo "[`date +"%Y-%m-%d-%H-%M"`] INFO: (Re)connection successful" >> /tmp/auto-whu.log
 		else
 			reconnect=1
 			while [[ $reconnect -le 5 ]]; do
 				echo "WARNING: (Re)connection failed for $reconnect time(s), retrying in 5 seconds"
-				echo "[`date +"%Y-%m-%d-%H-%M"`] WARNING: (Re)connection failed for $reconnect time(s), retrying in 5 seconds"
+				echo "[`date +"%Y-%m-%d-%H-%M"`] WARNING: (Re)connection failed for $reconnect time(s), retrying in 5 seconds" >> /tmp/auto-whu.log		
+				curl -d "username=$username&pwd=$pwd" "http://172.19.1.9:8080/eportal/userV2.do?method=login&param=true&`curl baidu.com|grep -oP "(?<=\?).*(?=\')"`" 1>/dev/null 2>&1 
 				if [[ $? = 0 ]]; then
-					echo "INFO: (Re)connection successful" >> /tmp/auto-whu.log
+					echo "INFO: (Re)connection successful" 
 					echo "[`date +"%Y-%m-%d-%H-%M"`] INFO: (Re)connection successful" >> /tmp/auto-whu.log		
 					break
 				fi
@@ -43,6 +45,6 @@ while true; do
 			fi
 		fi
     fi
-    sleep 60
+    sleep 5
 done
 exit
