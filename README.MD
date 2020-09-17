@@ -1,10 +1,12 @@
 Automatical WHU network authentication tool for OpenWrt
 =
-用于OpenWrt的武大校园网自动认证工具，理论上可以适用于其他使用锐捷ePortal方式认证的校园网络环境
+用于OpenWrt的武大校园网自动认证工具，无需Python等环境要素，理论上可以适用于其他使用锐捷ePortal方式认证的校园网络环境
 
 如何使用？
 --
-1、安装依赖grep和curl，你的OpenWrt设备此时必须已经联网
+0、确保你的Openwrt网关设备具有至少300KiB左右的空闲空间，这将用来安装独立的全功能grep和opkg，及其对应的依赖libcurl等，auto-whu本身只占用约1KiB空间
+
+1、安装依赖grep和curl，你的OpenWrt网关此时必须已经联网（由于校园网对路由设备弱检测，你可以使用连接在网关上的带有图形界面的设备参照直接连接到校园网时那样认证，完成后即可直接上网）
 ````
 opkg update
 opkg install grep curl
