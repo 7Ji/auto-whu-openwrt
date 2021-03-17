@@ -1,6 +1,7 @@
 Automatical WHU network authentication tool for OpenWrt
 =
 用于OpenWrt的武大校园网自动认证工具，无需Python等环境要素，理论上可以适用于其他使用锐捷ePortal方式认证的校园网络环境
+如果你使用的非OpenWrt的普通Linux发行版（Arch Linux、Ubuntu等），请使用[适用于systemd的普通版auto-whu](https://github.com/7Ji/auto-whu-standard)
 
 如何使用？
 --
